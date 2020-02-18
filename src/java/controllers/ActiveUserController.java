@@ -11,12 +11,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author tuannnh
  */
 public class ActiveUserController extends HttpServlet {
+
+    static Logger log = Logger.getLogger(ActiveUserController.class);
 
     private static final String ERROR = "error.jsp";
     private static final String SUCCESS = "success.jsp";
@@ -52,7 +55,7 @@ public class ActiveUserController extends HttpServlet {
                 request.setAttribute("ERROR_MESSAGE", "The account <strong>" + email + "</strong> is already actived");
             }
         } catch (Exception e) {
-            log("Error at Active User Controller: " + e.getMessage());
+            log.info("Error at Active User Controller: " + e.getMessage());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

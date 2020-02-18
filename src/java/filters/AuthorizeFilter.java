@@ -118,7 +118,6 @@ public class AuthorizeFilter implements Filter {
 
         String action = request.getParameter("action");
         String uri = req.getRequestURI();
-        String originalURL = uri.replace("/LAB231_Blog", "");
 
         String url = null;
 

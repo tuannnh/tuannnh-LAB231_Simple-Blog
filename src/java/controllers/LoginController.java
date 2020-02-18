@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -21,6 +22,7 @@ import org.apache.commons.codec.digest.DigestUtils;
  */
 public class LoginController extends HttpServlet {
 
+    static Logger log = Logger.getLogger(LoginController.class);
     private static final String ERROR = "login.jsp";
     private static final String USER = "index.jsp";
     private static final String ADMIN = "admin.jsp";
@@ -65,9 +67,9 @@ public class LoginController extends HttpServlet {
 
             }
         } catch (Exception e) {
-            log("Error at Login Controller:" + e.getMessage());
+            log.info("Error at Login Controller:" + e.getMessage());
         } finally {
-            request.getRequestDispatcher(url).forward(request, response);
+           response.sendRedirect(url);
         }
     }
 

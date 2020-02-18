@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpSession;
  */
 public class CreateArticleController extends HttpServlet {
 
+    static Logger log = Logger.getLogger(CreateArticleController.class);
     private static final String ERROR = "error.jsp";
     private static final String SUCCESS = "success.jsp";
 
@@ -53,7 +55,7 @@ public class CreateArticleController extends HttpServlet {
                 request.setAttribute("SUCCESS_MESSAGE", "Your new article is submited and waiting for approve");
             }
         } catch (Exception e) {
-            log("Error at Create Article Controller: " + e.getMessage());
+            log.info("Error at Create Article Controller: " + e.getMessage());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

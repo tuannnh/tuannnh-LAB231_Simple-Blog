@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpSession;
  */
 public class ApproveArticleController extends HttpServlet {
 
+    static Logger log = Logger.getLogger(ApproveArticleController.class);
     private static final String ERROR = "error.jsp";
     private static final String INDEX = "index.jsp";
     private static final String SUCCESS = "SearchArticleController";
@@ -54,7 +56,7 @@ public class ApproveArticleController extends HttpServlet {
             }
 
         } catch (Exception e) {
-            log("Error at Approve Article Controller: " + e.getMessage());
+            log.info("Error at Approve Article Controller: " + e.getMessage());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

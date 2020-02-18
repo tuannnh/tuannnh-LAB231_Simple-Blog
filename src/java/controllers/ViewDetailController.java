@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ViewDetailController extends HttpServlet {
 
+    static Logger log = Logger.getLogger(ViewDetailController.class);
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -36,11 +38,9 @@ public class ViewDetailController extends HttpServlet {
             long articleId = Long.parseLong(request.getParameter("txtId"));
             ArticleDAO dao = new ArticleDAO();
             Article article = dao.findById(articleId);
-            List<Comment> commentList;
-
             request.setAttribute("ARTICLE", article);
         } catch (Exception e) {
-            log("Error at View Detail Controller: " + e.getMessage());
+            log.info("Error at View Detail Controller: " + e.getMessage());
         } finally {
             request.getRequestDispatcher("single.jsp").forward(request, response);
         }

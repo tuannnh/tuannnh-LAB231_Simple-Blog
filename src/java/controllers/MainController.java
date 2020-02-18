@@ -5,15 +5,11 @@
  */
 package controllers;
 
-import entities.User;
 import java.io.IOException;
-import java.util.Arrays;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
 /**

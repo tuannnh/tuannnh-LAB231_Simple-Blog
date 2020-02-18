@@ -7,11 +7,11 @@ package controllers;
 
 import daos.ArticleDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class DeleteArticleController extends HttpServlet {
 
+    static Logger log = Logger.getLogger(DeleteArticleController.class);
     private static final String ERROR = "error.jsp";
     private static final String ERROR_MESSAGE = "The Article is not existed!";
     private static final String SUCCESS = "SearchArticleController";
@@ -45,7 +46,7 @@ public class DeleteArticleController extends HttpServlet {
                 request.setAttribute("ERROR_MESSAGE", ERROR_MESSAGE);
             }
         } catch (Exception e) {
-            log("Error at Delete Article Controller: " + e.getMessage());
+            log.info("Error at Delete Article Controller: " + e.getMessage());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

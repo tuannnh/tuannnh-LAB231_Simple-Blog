@@ -53,8 +53,6 @@ public class SearchArticleController extends HttpServlet {
             }
             String pageIndex = request.getParameter("txtPageId");
             String status = request.getParameter("txtStatus");
-            System.out.println(status);
-            System.out.println(role);
             ArticleDAO dao = new ArticleDAO();
             List<Article> articleList;
             double totalPage;

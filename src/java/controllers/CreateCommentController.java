@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpSession;
  */
 public class CreateCommentController extends HttpServlet {
 
+    static Logger log = Logger.getLogger(CreateCommentController.class);
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -49,7 +51,7 @@ public class CreateCommentController extends HttpServlet {
             dao.createComment(content, commentDate, user, article);
 
         } catch (Exception e) {
-            log("Error at Create Article Controller: " + e.getMessage());
+            log.info("Error at Create Article Controller: " + e.getMessage());
         } finally {
             request.getRequestDispatcher("ViewDetailController").forward(request, response);
         }

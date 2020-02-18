@@ -48,7 +48,6 @@ public class UserDAO implements Serializable {
         qr.setParameter("status", "Active");
 
         if (qr.getResultList().size() > 0) {
-            System.out.println(qr.getSingleResult());
             user = ((User) qr.getSingleResult());
         }
         return user;
@@ -61,7 +60,7 @@ public class UserDAO implements Serializable {
         Query qr = em.createQuery(sql);
         qr.setParameter("email", email);
         if (qr.getResultList().size() > 0) {
-            status = (String)qr.getSingleResult();
+            status = (String) qr.getSingleResult();
         }
         return status;
 
@@ -83,18 +82,14 @@ public class UserDAO implements Serializable {
 
     public boolean register(String email, String name, String password, String token) throws Exception {
         EntityManager em = emf.createEntityManager();
-        System.out.println(email);
-        System.out.println(name);
-        System.out.println(password);
-        System.out.println(token);
         User newUser = em.find(User.class, email);
         if (newUser == null) {
             newUser = new User(email, name, password, "User", "New", token);
             em.getTransaction().begin();
             em.persist(newUser);
             em.getTransaction().commit();
+            return true;
         }
-
-        return true;
+        return false;
     }
 }

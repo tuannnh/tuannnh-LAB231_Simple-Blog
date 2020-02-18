@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -26,6 +27,7 @@ import org.apache.commons.codec.digest.DigestUtils;
  */
 public class RegisterController extends HttpServlet {
 
+    static Logger log = Logger.getLogger(RegisterController.class);
     private static final String ERROR = "register.jsp";
     private static final String SUCCESS = "success.jsp";
 
@@ -44,25 +46,20 @@ public class RegisterController extends HttpServlet {
         String email = "";
         try {
             email = request.getParameter("txtEmail");
-            if (email == null) {
-                request.setAttribute("ERROR_MESSAGE", "There is nothing to active");
+            String name = request.getParameter("txtName");
+            String password = DigestUtils.sha256Hex(request.getParameter("txtPassword"));
+            String token = UUID.randomUUID().toString().replace("-", "");
+            UserDAO dao = new UserDAO();
+            boolean result = dao.register(email, name, password, token);
+            if (result) {
+                sendMail(email, token, request);
+                url = SUCCESS;
             } else {
-                String name = request.getParameter("txtName");
-                String password = DigestUtils.sha256Hex(request.getParameter("txtPassword"));
-                String token = UUID.randomUUID().toString().replace("-", "");
-                UserDAO dao = new UserDAO();
-                boolean result = dao.register(email, name, password, token);
-                if (result) {
-                    sendMail(email, token, request);
-                    url = SUCCESS;
-                }
+                request.setAttribute("ERROR_MESSAGE", "*This email: " + email + " is existed!");
             }
 
         } catch (Exception e) {
-            log("Error at Register Controller :" + e.getMessage());
-            if (e.getMessage().contains("Duplicate")) {
-                request.setAttribute("ERROR_MESSAGE", "*This email: " + email + "is existed!");
-            }
+            log.info("Error at Register Controller :" + e.getMessage());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
@@ -70,10 +67,10 @@ public class RegisterController extends HttpServlet {
     }
 
     private void sendMail(String receiver, String token, HttpServletRequest request) throws Exception {
-        Email from = new Email("system@localhost");
+        Email from = new Email("hungtuanblog@localhost");
         String subject = "Verification Email";
         Email to = new Email(receiver);
-        Content content = new Content("text/html", "This is your verification link to active your account. Please click this link: <a href='http://localhost:9000/LAB231_Blog/MainController?action=Active&txtEmail=" + receiver + "&txtToken=" + token + "'>Verification Link</a>");
+        Content content = new Content("text/html", "This is your verification link to active your account. Please click this link: <a href='http://localhost:8080/LAB231_Blog/MainController?action=Active&txtEmail=" + receiver + "&txtToken=" + token + "'>Verification Link</a>");
         Mail mail = new Mail(from, subject, to, content);
 
         SendGrid sg = new SendGrid(System.getenv("SENDGRID_API_KEY"));
@@ -85,7 +82,7 @@ public class RegisterController extends HttpServlet {
         sg.api(req);
         if (receiver != null) {
             request.setAttribute("SUCCESS_MESSAGE", "The verification email have been sent to your email: " + receiver + ". Please check your inbox and click the supplied link to active your account.");
-            
+
         }
     }
 
